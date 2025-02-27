@@ -1,0 +1,61 @@
+- name: Install Docker
+  hosts: default
+  become: true
+
+  tasks:
+    - name: Install necessary software for Docker.
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      loop:
+        - ca-certificates
+        - curl
+        - gnupg
+
+    - name: Add Docker GPG apt Key.
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository.
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu jammy stable
+        state: present
+
+    - name: Update apt and install docker-ce.
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+- name: Install software common to all servers.
+  hosts: default
+  become: true
+
+  tasks:
+    - name: Install nginx, certbot, etc.
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
+      loop:
+        - nginx
+        # - certbot
+        - curl
+        - git
+        - qemu-guest-agent
+
+
+- name: Run cloud-init clean.
+  hosts: default
+  become: true
+
+  tasks:
+    - name: Cloud-init clean.
+      command: cloud-init clean --logs --machine-id
+
+    - name: Ensure cloud-init is enabled
+      file:
+        path: /etc/cloud/cloud-init.disabled
+        state: absent
