@@ -8,7 +8,7 @@ cp  base-image/jammy-server-cloudimg-amd64.img output-image/disk0.img
 ```
 ### Expand disk
 ```
-qemu-img resize disk0.img +18GB
+qemu-img resize disk0.img +18G
 ```
 
 ### Start an IMDS webserver
