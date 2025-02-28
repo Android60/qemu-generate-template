@@ -4,6 +4,11 @@
 ```
 wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 cp  base-image/jammy-server-cloudimg-amd64.img output-image/disk0.img
+
+```
+### Expand disk
+```
+qemu-img resize disk0.img +18GB
 ```
 
 ### Start an IMDS webserver
